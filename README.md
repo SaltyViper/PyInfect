@@ -12,8 +12,8 @@ Compatible with Python versions 2.x and 3.x.
 #### Usage
 
 ```
-cd PyInfect
-python PyInfect.py
+cd PyInfect/
+python ./PyInfect.py
 ```
 
 # Mechanism
