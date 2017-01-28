@@ -3,6 +3,7 @@ Backdoor any .py file // Backdoor implanter for OS X - Compatible with EggShell!
 
 # Description
 PyInfect is a tool that allows you to create and implant a backdoor on any .py file. The malware works on Mac OS (and soon for Linux).
+Compatible with Python versions 2.x and 3.x.
 
 # Getting Started
 #### Installation
@@ -11,8 +12,8 @@ PyInfect is a tool that allows you to create and implant a backdoor on any .py f
 #### Usage
 
 ```
-cd PyInfect
-python PyInfect.py
+cd PyInfect/
+python ./PyInfect.py
 ```
 
 # Mechanism
@@ -24,4 +25,3 @@ You can monitor, manage and interact with infected machines with the CNC interfa
 # To do
 1. Implement feature to implant backdoor on a pre-existing .py file.
 2. Support Linux infection (without persistence) - EggShell does not support Linux.
-3. ~~Make it Python3 compatible.~~
