@@ -24,4 +24,4 @@ You can monitor, manage and interact with infected machines with the CNC interfa
 # To do
 1. Implement feature to implant backdoor on a pre-existing .py file.
 2. Support Linux infection (without persistence) - EggShell does not support Linux.
-~~3. Make it Python3 compatible.~~
+3. ~~Make it Python3 compatible.~~
