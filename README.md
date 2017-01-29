@@ -24,7 +24,7 @@ python PyInfect.py
 The way this tool works is by writing a backdoored shell command in .py file which is being executed when the .py file is run. As soon as the victim runs the .py script, it'll automatically run that shell command which will install a persistance .plist file on their computer, which you can customize using this interactive script.
 
 # Manage Connections
-You can monitor, manage and interact with infected machines with the CNC interface created by [Lucas Jackson](https://github.com/neoneggplant/): [EggShell](https://github.com/neoneggplant/EggShell).
+You can monitor, manage and interact with infected machines using the CNC interface Script, written by [Lucas Jackson](https://github.com/neoneggplant/): [EggShell](https://github.com/neoneggplant/EggShell).
 
 # To do
 1. Implement feature to implant backdoor on a pre-existing .py file.
