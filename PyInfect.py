@@ -89,7 +89,7 @@ def main():
     print()
     
     OS = 0
-    while not OS in [1,2]:
+    while not int(OS) in [1,2]:
         print("Choose a target OS:")
         print()
         print("1) OS X")
