@@ -43,14 +43,17 @@ def printY(strs):
 
 def append(filepath, string):
     temp = list()
-    with open(filepath, 'r') as file:
-        for line in file:
-            temp += line
+    try:
+        with open(filepath, 'r') as file:
+            for line in file:
+                temp += line
 
-    temp = '\n'.join(temp)
-    with open(filepath, 'w') as file:
-        file.write(string)
-        file.write(temp)
+        temp = '\n'.join(temp)
+        with open(filepath, 'w') as file:
+            file.write(string)
+            file.write(temp)
+    except IOError:
+        print("File not found.")
 
 def main():
     global yes, no
