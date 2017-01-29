@@ -101,6 +101,7 @@ def main():
             file.write('''
 filepath = '/etc/rc.local'
 command = """{}"""
+
 try:
     with open(filepath, 'r') as file:
         temp = file.read()
