@@ -16,7 +16,7 @@ PyInfect is Compatible with Python versions 2.x and 3.x.
 #### Usage
 
 ```
-cd PyInfect
+cd PyInfect/
 python PyInfect.py
 ```
 
