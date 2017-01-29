@@ -88,6 +88,7 @@ def main():
     encode = get_input(color['CYAN'] + "Encode to Base64? [Y/N]: " + color['GREEN'])
     print()
     
+    OS = 0
     while not OS in [1,2]:
         print("Choose a target OS:")
         print()
