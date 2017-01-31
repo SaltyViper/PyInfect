@@ -30,4 +30,4 @@ You can monitor, manage and interact with infected machines using the CNC interf
 1. Add feature to implant backdoor on a pre-existing .py file.
 
 # Credits
-PyInfect was created by @0xCoto and @danbatiste
+PyInfect was created by [@0xCoto](https://github.com/0xCoto) and [@danbatiste](https://github.com/danbatiste)
